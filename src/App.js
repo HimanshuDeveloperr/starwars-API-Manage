@@ -5,28 +5,33 @@ import "./App.css";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  function fecthingMovies() {
-    fetch("https://swapi.dev/api/films/")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        const transformDataNames = data.results.map((arrofmovies) => {
-          return {
-            id: arrofmovies.episode_id,
-            title: arrofmovies.title,
-            openingText:arrofmovies.opening_crawl,
-            releaseDate:arrofmovies.release_date
-          };
-        });
-        setMovies(transformDataNames);
-      });
+   
+
+  async function fetchingMovies() {
+  try {
+    const response = await fetch("https://swapi.dev/api/films/");
+    const data = await response.json();
+    const transformDataNames = data.results.map((arrofmovies) => {
+      return {
+        id: arrofmovies.episode_id,
+        title: arrofmovies.title,
+        openingText:arrofmovies.opening_crawl,
+        releaseDate:arrofmovies.release_date
+      };
+    });
+    setMovies(transformDataNames);
+  } catch (error) {
+    console.error(error);
   }
+}
+
+    
+  
 
   return (
     <React.Fragment>
       <section>
-        <button onClick={fecthingMovies}>Fetch Movies</button>
+        <button onClick={fetchingMovies}>Fetch Movies</button>
       </section>
       <section>
         <MoviesList movies={movies} />
