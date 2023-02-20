@@ -13,6 +13,7 @@ function App() {
   try {
     const response = await fetch("https://swapi.dev/api/films/");
     const data = await response.json();
+    console.log(response.status)
     const transformDataNames = data.results.map((arrofmovies) => {
       return {
         id: arrofmovies.episode_id,
