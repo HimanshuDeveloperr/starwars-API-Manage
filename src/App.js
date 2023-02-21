@@ -1,71 +1,82 @@
-import React, { useState } from "react";
-import {Button} from "react-bootstrap"
+import React, { useCallback, useState } from "react";
+import { Button } from "react-bootstrap"
 import MoviesList from "./components/MoviesList";
 import "./App.css";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [isLoading,setIsLoading]=useState(false);
-  const [errorFound,setErrorFound]=useState(null)
-   
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorFound, setErrorFound] = useState(null)
+  useState(0)
 
-  async function fetchingMovies() {
+
+  const fetchingMovies = useCallback(async () => {
     setIsLoading(true)
     setErrorFound(null)
-  try {
-    const response = await fetch("https://swapi.dev/api/film/");
-    if(!response.ok){
-      throw new Error( 'Something went wrong ....Retrying')
-       
+    try {
+      const response = await fetch("https://swapi.dev/api/film/");
+      if (!response.ok) {
+        throw new Error('Something went wrong ....Retrying')
+
+      }
+      const data = await response.json();
+      console.log(response.status)
+
+
+
+      const transformDataNames = data.results.map((arrofmovies) => {
+        return {
+          id: arrofmovies.episode_id,
+          title: arrofmovies.title,
+          openingText: arrofmovies.opening_crawl,
+          releaseDate: arrofmovies.release_date
+        };
+      });
+      setMovies(transformDataNames);
+
+    } catch (error) {
+      setErrorFound(error.message);
+
+
+
     }
-    const data = await response.json();
-    console.log(response.status)
+    setIsLoading(false)
 
+  }, [])
 
+  if (errorFound) {
 
-    const transformDataNames = data.results.map((arrofmovies) => {
-      return {
-        id: arrofmovies.episode_id,
-        title: arrofmovies.title,
-        openingText:arrofmovies.opening_crawl,
-        releaseDate:arrofmovies.release_date
-      };
-    });
-    setMovies(transformDataNames);
-    
-  } catch (error) {
-    setErrorFound(error.message);
-        
-
-  }
-      setIsLoading(false)
-
-}
-
-    
-  let content=<p>Found no movies.</p>
-
-  if(movies.length>0 && !isLoading){
-    // movies array is not empty
-    content=<MoviesList movies={movies} />
+    var id = setTimeout(fetchingMovies, 5000);
   }
 
-  if(errorFound){
-    // error is found
-const cancelHandler=()=>{
-  setErrorFound(null)
-  setIsLoading(false)
-  
-}
-    content=<p>{errorFound}
-    <div style={{margin:'2px'}}>
-      <Button style={{color:"white"}} onClick={cancelHandler}>Cancel</Button>
-    </div>
+  let cancelHandler = useCallback(() => {
+    clearTimeout(id)
+    setErrorFound(null)
+
+
+  }, [id])
+
+
+
+
+  let content = <p>Found no movies.</p>
+
+  if (movies.length > 0 && !isLoading) {
+
+    content = <MoviesList movies={movies} />
+  }
+
+  if (errorFound) {
+
+    content = <p>{errorFound}
+      <div style={{ margin: '2px' }}>
+        <Button style={{ color: "white" }} onClick={cancelHandler}>Cancel</Button>
+      </div>
     </p>
   }
 
-  if(isLoading){
-    content=<p>Loading...</p>
+  if (isLoading) {
+    content = <p>Loading...</p>
   }
 
   return (
