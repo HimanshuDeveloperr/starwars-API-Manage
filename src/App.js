@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import {Button} from "react-bootstrap"
 import MoviesList from "./components/MoviesList";
 import "./App.css";
 
@@ -13,9 +13,10 @@ function App() {
     setIsLoading(true)
     setErrorFound(null)
   try {
-    const response = await fetch("https://swapi.dev/api/films/");
+    const response = await fetch("https://swapi.dev/api/film/");
     if(!response.ok){
-      throw new Error("something went wrong")
+      throw new Error( 'Something went wrong ....Retrying')
+       
     }
     const data = await response.json();
     console.log(response.status)
@@ -51,8 +52,16 @@ function App() {
 
   if(errorFound){
     // error is found
-
-    content=<p>{errorFound}</p>
+const cancelHandler=()=>{
+  setErrorFound(null)
+  setIsLoading(false)
+  
+}
+    content=<p>{errorFound}
+    <div style={{margin:'2px'}}>
+      <Button style={{color:"white"}} onClick={cancelHandler}>Cancel</Button>
+    </div>
+    </p>
   }
 
   if(isLoading){
