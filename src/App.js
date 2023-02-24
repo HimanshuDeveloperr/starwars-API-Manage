@@ -57,8 +57,19 @@ function App() {
 
   let content = <p>Found no movies.</p>;
 
+async function deleteMovieHandler  (movieId) {
+    await fetch(`https://mystarwar-api-default-rtdb.firebaseio.com/movies/${movieId}.json`, {
+      method: 'DELETE'
+    });
+  
+    setMovies((prevMovies) => {
+      return prevMovies.filter((movie) => movie.id !== movieId);
+    });
+    
+  };
+
   if (movies.length > 0 && !isLoading) {
-    content = <MoviesList movies={movies} />;
+    content = <MoviesList movies={movies} onDeleteMovie={deleteMovieHandler} />;
   }
 
   if (errorFound) {

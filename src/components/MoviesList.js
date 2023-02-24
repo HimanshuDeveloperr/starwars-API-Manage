@@ -4,6 +4,9 @@ import Movie from './Movie';
 import classes from './MoviesList.module.css';
 
 const MovieList = (props) => {
+  const handleDeleteMovie = (movieId) => {
+    props.onDeleteMovie(movieId);
+  };
   return (
     <ul className={classes['movies-list']}>
       {props.movies.map((movie) => (
@@ -12,6 +15,7 @@ const MovieList = (props) => {
           title={movie.title}
           releaseDate={movie.releaseDate}
           openingText={movie.openingText}
+          onDeleteMovie={() => handleDeleteMovie(movie.id)}
         />
       ))}
     </ul>
