@@ -4,9 +4,7 @@ import { Button } from 'react-bootstrap';
 import classes from './Movie.module.css';
 
 const Movie = (props) => {
-  const handleDeleteMovie = () => {
-    props.onDeleteMovie(props.id);
-  };
+  
 
   return (
     <li className={classes.movie}>
@@ -14,7 +12,7 @@ const Movie = (props) => {
       <h3>{props.releaseDate}</h3>
       <p>{props.openingText}</p>
       <div>
-        <Button onClick={handleDeleteMovie}>Delete</Button>
+        <Button onClick={props.onDeleteMovie} style={{border:"white 2px solid"}}>Delete</Button>
       </div>
     </li>
   );
