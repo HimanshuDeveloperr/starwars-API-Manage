@@ -1,7 +1,7 @@
 import React, { Fragment, useRef } from "react";
 import classes from "./NewMovies.module.css"
 
-const NewMovies = () => {
+const NewMovies = (props) => {
   
 const titleRef=useRef("")
 const openingTextRef=useRef("")
@@ -14,7 +14,7 @@ const releaseDateRef=useRef("")
             openingText: openingTextRef.current.value,
             releaseDate: releaseDateRef.current.value,
           };
-          console.log(movie)
+          props.onAddMovie(movie);
     }
 
   return (

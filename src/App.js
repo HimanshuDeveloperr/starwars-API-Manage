@@ -74,11 +74,15 @@ function App() {
     content = <p>Loading...</p>;
   }
 
+const MovieHandler=(movies)=>{
+  console.log(movies)
+}
+
   return (
     <React.Fragment>
       <section>
 
-      <NewMovies/>
+      <NewMovies onAddMovie={MovieHandler}/>
       </section>
       <section>
         
