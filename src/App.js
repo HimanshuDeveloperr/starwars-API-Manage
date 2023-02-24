@@ -2,6 +2,7 @@ import React, { useCallback, useState,useEffect } from "react";
 import { Button } from "react-bootstrap";
 import MoviesList from "./components/MoviesList";
 import "./App.css";
+import NewMovies from "./components/NewMovies/NewMovies";
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -40,7 +41,7 @@ function App() {
     fetchingMovies ()
   }, [fetchingMovies])
 
-  
+
   if (errorFound) {
     var id = setTimeout(fetchingMovies, 5000);
   }
@@ -76,6 +77,11 @@ function App() {
   return (
     <React.Fragment>
       <section>
+
+      <NewMovies/>
+      </section>
+      <section>
+        
         <button onClick={fetchingMovies}>Fetch Movies</button>
       </section>
       <section>{content}</section>
